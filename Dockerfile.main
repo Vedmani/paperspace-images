@@ -55,9 +55,6 @@ RUN apt-get update && \
     zlib1g \
     software-properties-common
 
-# Run the script
-RUN /bin/bash /code-installation.sh
-
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
         $APT_INSTALL git-lfs
 
@@ -78,6 +75,12 @@ RUN $APT_INSTALL \
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash  && \
     $APT_INSTALL nodejs 
 RUN python3 -m pip install --upgrade jupyter
+
+# ==================================================================
+# Install VS Code
+# ------------------------------------------------------------------
+RUN chmod +x /home/setup/code-installation.sh && \
+    /home/setup/code-installation.sh
             
 
 # ==================================================================
