@@ -17,8 +17,6 @@ RUN mkdir -p /home/projects
 WORKDIR /home/setup
 COPY ./code-installation.sh /home/setup/code-installation.sh
 
-RUN chmod +x /home/setup/code-installation.sh
-RUN /home/setup/code-installation.sh
 
 RUN apt-get update && \
     $APT_INSTALL \
@@ -56,6 +54,13 @@ RUN apt-get update && \
     cifs-utils \
     zlib1g \
     software-properties-common
+
+
+# Make the script executable
+RUN chmod +x /code-installation.sh
+
+# Run the script
+RUN /bin/bash /code-installation.sh
 
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
         $APT_INSTALL git-lfs
