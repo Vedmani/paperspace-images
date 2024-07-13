@@ -55,10 +55,6 @@ RUN apt-get update && \
     zlib1g \
     software-properties-common
 
-
-# Make the script executable
-RUN chmod +x /code-installation.sh
-
 # Run the script
 RUN /bin/bash /code-installation.sh
 
