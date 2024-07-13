@@ -11,6 +11,10 @@ ENV APT_INSTALL="apt-get install -y --no-install-recommends"
 ENV PIP_INSTALL="python3 -m pip --no-cache-dir install --upgrade"
 ENV GIT_CLONE="git clone --depth 10"
 
+RUN mkdir -p /home/projects
+
+WORKDIR /home/projects
+
 RUN apt-get update && \
     $APT_INSTALL \
     gcc \
@@ -31,7 +35,6 @@ RUN apt-get update && \
     unzip \
     unrar \
     zip \
-    awscli \
     csvkit \
     emacs \
     joe \
