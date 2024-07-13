@@ -11,9 +11,14 @@ ENV APT_INSTALL="apt-get install -y --no-install-recommends"
 ENV PIP_INSTALL="python3 -m pip --no-cache-dir install --upgrade"
 ENV GIT_CLONE="git clone --depth 10"
 
+RUN mkdir -p /home/setup
 RUN mkdir -p /home/projects
 
-WORKDIR /home/projects
+WORKDIR /home/setup
+COPY ./code-installation.sh /home/setup/code-installation.sh
+
+RUN chmod +x /home/setup/code-installation.sh
+RUN /home/setup/code-installation.sh
 
 RUN apt-get update && \
     $APT_INSTALL \
@@ -61,23 +66,24 @@ RUN $PIP_INSTALL jupyterlab
 # Installing JRE and JDK
 # ------------------------------------------------------------------
 
-    RUN $APT_INSTALL \
-        default-jre \
-        default-jdk
+RUN $APT_INSTALL \
+    default-jre \
+    default-jdk
 
 
 # ==================================================================
 # Node.js and Jupyter Notebook Extensions
 # ------------------------------------------------------------------
-    RUN curl -sL https://deb.nodesource.com/setup_20.x | bash  && \
-        $APT_INSTALL nodejs 
-    RUN python3 -m pip install --upgrade jupyter
-                
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash  && \
+    $APT_INSTALL nodejs 
+RUN python3 -m pip install --upgrade jupyter
+            
 
 # ==================================================================
 # Startup
 # ------------------------------------------------------------------
+WORKDIR /home/projects
 
-    EXPOSE 8888 6006
+EXPOSE 8888 6006
 
-    ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--no-browser", "--ServerApp.trust_xheaders=True", "--ServerApp.disable_check_xsrf=False", "--ServerApp.allow_remote_access=True", "--ServerApp.allow_origin='*'", "--ServerApp.allow_credentials=True"]
+ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--no-browser", "--ServerApp.trust_xheaders=True", "--ServerApp.disable_check_xsrf=False", "--ServerApp.allow_remote_access=True", "--ServerApp.allow_origin='*'", "--ServerApp.allow_credentials=True"]
