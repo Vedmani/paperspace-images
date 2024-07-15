@@ -14,15 +14,15 @@ CMD="jupyter lab --allow-root --ip=0.0.0.0 --no-browser \
 #     exec $CMD
 # fi
 
-# Print debug information
-print_debug_info "$@"
+# Print script information
+print_script_info "$@"
 
 # If a command is passed to the script, run that instead
 if [ $# -gt 0 ]; then
-    [ "$DEBUG" != "false" ] && echo "Executing provided command: $@"
+    echo "Executing provided command: $@"
     exec "$@"
 else
     # Otherwise, run the default command
-    [ "$DEBUG" != "false" ] && echo "Executing default command: $CMD"
+    echo "Executing default command: $CMD"
     exec $CMD
 fi
