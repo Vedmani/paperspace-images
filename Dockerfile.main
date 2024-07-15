@@ -81,8 +81,16 @@ RUN python3 -m pip install --upgrade jupyter
 # ------------------------------------------------------------------
 RUN chmod +x /home/setup/code-installation.sh && \
     /home/setup/code-installation.sh
-            
 
+# ==================================================================
+# Install ngrok
+# ==================================================================
+RUN curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
+    sudo gpg --dearmor -o /etc/apt/keyrings/ngrok.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/ngrok.gpg] https://ngrok-agent.s3.amazonaws.com buster main" | \
+    sudo tee /etc/apt/sources.list.d/ngrok.list && \
+    sudo apt update && sudo apt install ngrok
+            
 # ==================================================================
 # Startup
 # ------------------------------------------------------------------
@@ -90,4 +98,4 @@ WORKDIR /home/projects
 
 EXPOSE 8888 6006
 
-ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--no-browser", "--ServerApp.trust_xheaders=True", "--ServerApp.disable_check_xsrf=False", "--ServerApp.allow_remote_access=True", "--ServerApp.allow_origin='*'", "--ServerApp.allow_credentials=True"]
+ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--no-browser", "--ServerApp.trust_xheaders=True", "--ServerApp.disable_check_xsrf=False", "--ServerApp.allow_remote_access=True", "--ServerApp.allow_origin='*'", "--ServerApp.allow_credentials=True", "--notebook-dir=/home/projects"]
