@@ -98,4 +98,11 @@ WORKDIR /home/projects
 
 EXPOSE 8888 6006
 
-ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--no-browser", "--ServerApp.trust_xheaders=True", "--ServerApp.disable_check_xsrf=False", "--ServerApp.allow_remote_access=True", "--ServerApp.allow_origin='*'", "--ServerApp.allow_credentials=True", "--notebook-dir=/home/projects"]
+# Copy the startup script into the image
+COPY startup.sh /usr/local/bin/startup.sh
+RUN chmod +x /usr/local/bin/startup.sh
+
+# Use the startup script as the entrypoint
+ENTRYPOINT ["/usr/local/bin/startup.sh"]
+
+# ENTRYPOINT ["jupyter", "lab", "--allow-root", "--ip=0.0.0.0", "--no-browser", "--ServerApp.trust_xheaders=True", "--ServerApp.disable_check_xsrf=False", "--ServerApp.allow_remote_access=True", "--ServerApp.allow_origin='*'", "--ServerApp.allow_credentials=True", "--notebook-dir=/home/projects"]
