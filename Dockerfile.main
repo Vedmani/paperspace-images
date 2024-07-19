@@ -1,5 +1,4 @@
-FROM vllm/vllm-openai:v0.5.1
-LABEL description="Docker image which runs vllm on paperspace gradient notebooks"
+FROM vllm/vllm-openai:v0.5.2
 
 RUN yes| unminimize
 
